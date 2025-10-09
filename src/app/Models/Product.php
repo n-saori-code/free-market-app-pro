@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Product extends Model
 {
@@ -11,13 +12,17 @@ class Product extends Model
 
     protected $fillable = [
         'user_id',
-        'category_id',
         'condition_id',
         'image',
         'title',
         'brand',
         'description',
         'price',
+        'is_sold',
+    ];
+
+    protected $casts = [
+        'is_sold' => 'boolean',
     ];
 
     public function user()
@@ -25,9 +30,9 @@ class Product extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_product');
     }
 
     public function condition()
@@ -40,14 +45,21 @@ class Product extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function favorites()
+    public function favoritedBy()
     {
-        return $this->belongsToMany(User::class, 'favorites', 'product_id', 'user_id')
+        return $this->belongsToMany(User::class, 'favorites')
             ->withTimestamps();
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function scopeKeywordSearch($query, $keyword)
+    {
+        if (!empty($keyword)) {
+            $query->where('title', 'like', '%' . $keyword . '%');
+        }
     }
 }

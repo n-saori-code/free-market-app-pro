@@ -1,0 +1,138 @@
+body {
+    padding-bottom: 90px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+h1, h2, p, a {
+    margin: 0;
+}
+
+.header {
+    background: #000;
+}
+
+.header__inner {
+    margin: 0 auto;
+    padding: 0 40px;
+    max-width: 1500px;
+}
+
+.header-utilities {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__heading {
+    margin: 0;
+    padding: 20px 0;
+}
+
+.header__heading img {
+    display: inline-block;
+    max-width: 370px;
+    height: auto;
+}
+
+.header-utilities nav {
+    width: 18%;
+    height: auto;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.header__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-niv__form input {
+    margin: 0 40px;
+    padding: 10px 32px;
+    width: 33vw;
+    height: 50px;
+    font-size: 24px;
+    font-weight: 400;
+    border-radius: 5px;
+    border: none;
+}
+
+.header-nav__login-link,
+.header-nav__mypage-link,
+.header-nav__button {
+    margin-right: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: clamp(18px, 1.8vw, 24px);
+    font-weight: 400;
+    cursor: pointer;
+    background: transparent;
+}
+
+.header-nav__button {
+    border: none;
+}
+
+.header-nav__sell-link {
+    margin-left: 10px;
+    padding: 5px 20px;
+    background-color: #fff;
+    max-width: 100px;
+    height: 100%;
+    border-radius: 4px;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+}
+
+.header-nav__sell-link a {
+    text-decoration: none;
+    border: none;
+    color: #000;
+}
+
+
+@media screen and (max-width: 850px) {
+
+    .header-utilities {
+        display: block;
+    }
+
+    .header__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-niv__form input {
+        margin: 0;
+        width: 40vw;
+        font-size: 2.12vw;
+    }
+
+    .header-nav__login-link,
+    .header-nav__mypage-link,
+    .header-nav__button {
+        margin-right: 1.5vw;
+        font-size: 2.82vw;
+    }
+
+    .header-nav__button {
+        border: none;
+    }
+
+    .header-nav__sell-link {
+        margin-left: 1vw;
+        padding: 0.59vw 2.35vw;
+        font-size: 2.82vw;
+    }
+}

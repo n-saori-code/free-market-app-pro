@@ -62,11 +62,41 @@ php artisan migrate
 php artisan db:seed
 ```
 
+## Stripe テスト決済
+
+1. .env に Stripe キーを設定
+
+```bash
+STRIPE_KEY=pk_test_あなたのキー
+STRIPE_SECRET=sk_test_あなたのキー
+```
+
+2. 「カード払い」の場合のテストカード情報：
+
+```bash
+カード番号: 4242 4242 4242 4242
+有効期限: 任意 (例: 12/34)
+CVC: 任意 (例: 123)
+ZIP: 任意 (例: 123-4567)
+```
+
+3. 商品購入が成功
+   ・決済後、商品一覧ページで商品に「sold」表示がつく
+   ・商品購入画面の購入ボタンが「sold」になり、クリックできなくなる（コーチの確認済み）
+
+## メール認証機能(使用技術：Mailhog)
+
+1. 会員登録後、メール認証画面に遷移
+2. 「認証はこちらから」のボタンを押し、http://localhost:8025 にアクセスし、届いたメールを確認
+3. メール内の「Verify Email Address」ボタンをクリック
+4. 認証完了後、プロフィール設定画面に遷移
+
 ## 使用技術(実行環境)
 
-- PHP8.3.0
-- Laravel8.83.27
+- PHP8.1.33
+- Laravel8.83.8
 - MySQL8.0.26
+- nginx1.21.1
 
 ## ER 図
 
@@ -75,4 +105,6 @@ php artisan db:seed
 ## URL
 
 - 開発環境：http://localhost/
-- phpMyAdmin:：http://localhost:8080/
+- ユーザー登録：http://localhost/register
+- phpMyAdmin：http://localhost:8080/
+- Mailhog：http://localhost:8025

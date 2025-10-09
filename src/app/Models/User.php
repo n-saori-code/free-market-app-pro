@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Product;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -59,9 +60,9 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function favorites()
+    public function favoriteProducts()
     {
-        return $this->belongsToMany(Product::class, 'favorites', 'user_id', 'product_id')
+        return $this->belongsToMany(Product::class, 'favorites')
             ->withTimestamps();
     }
 

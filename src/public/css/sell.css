@@ -1,0 +1,151 @@
+.sell-form__content {
+    margin: 0 auto;
+    padding: 51px 0;
+    max-width: 680px;
+}
+
+.sell-form__heading {
+    margin-bottom: 43px;
+    text-align: center;
+}
+
+.sell-form__heading h2 {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.form__item__title {
+    margin: 80px 0 36px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.8;
+    color: #5F5F5F;
+    border-bottom: 1px solid #5F5F5F;
+}
+
+.form__group-title {
+    margin-top: 38px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.8;
+    color: #000;
+}
+
+.form__error {
+    height: 20px;
+    color: #ff0000;
+    text-align: left;
+}
+
+.upload-box,
+.form__input--select input,
+.condition,
+.form__input--text input,
+.form__input--description textarea {
+    width: 100%;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    font-size: 24px;
+}
+
+.condition,
+.form__input--text input {
+    height: 45px;
+}
+
+.form__input--description textarea {
+    height: 125px;
+}
+
+.upload-box {
+padding: 53px 0;
+height: 150px;
+border: 1px dotted #5F5F5F;
+border-radius: 4px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 8px;
+}
+
+.upload-label {
+    display: inline-block;
+    padding: 10px 25px;
+    border: 2px solid #FF5655;
+    border-radius: 10px;
+    color: #FF5655;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.file-name {
+    display: block;
+    color: #555;
+    font-size: 18px;
+}
+
+.category-select {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-select label {
+    margin-bottom: 16px;
+    display: inline-block;
+    padding: 3px 14px;
+    border: 2px solid #FF5655;
+    border-radius: 20px;
+    color: #FF5655;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.category-select input:checked+label {
+    background-color: #FF5655;
+    color: #fff;
+}
+
+.price {
+    position: relative;
+}
+
+.price input {
+    padding-left: 20px;
+}
+
+.price .currency {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.form__button {
+    margin-top: 40px;
+}
+
+.form__button-submit {
+    padding: 15px;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 5px;
+    background: #FF5555;
+    color: #fff;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 850px) {
+    .sell-form__content {
+        padding: 51px 24px;
+    }
+}

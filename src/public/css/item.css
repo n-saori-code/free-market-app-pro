@@ -1,0 +1,254 @@
+p {
+    margin: 0;
+}
+
+.item__content {
+    margin: 95px auto 0;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.item__image {
+    margin-top: 30px;
+    flex: 1;
+    max-width: 46%;
+}
+
+.item__image img {display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.item__detail {
+    flex: 1;
+    max-width: 46%;
+}
+
+.item__title {
+    margin: 0 0 10px;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.item__brand {
+    margin: 0 0 30px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.item__price {
+    margin: 0 0 20px;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+}
+
+.item__price span {
+    font-size: 1.5em;
+}
+
+.item__icon {
+    margin: 0 0 22px;
+    display: flex;
+    gap: 24px;
+    justify-content: start;
+}
+
+.action-item {
+    margin: 0 5px 4px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+.favorite-btn {
+    border: none;
+    background-color: transparent;
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 4px;
+}
+
+.count {
+    font-weight: 700;
+    font-size: 18px;
+    color: #000;
+}
+
+.item__btn {
+    margin-bottom: 30px;
+    width: 100%;
+    height: 56px;
+    background-color: #FF5555;
+    color: #fff;
+    border: none;
+    font-size: 30px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.item__description {
+    margin: 0 0 20px;
+}
+
+.item__head {
+    margin-bottom: 20px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.item__description {
+    margin-bottom: 30px;
+}
+
+.item__description__txt {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.item__information__table {
+    border-collapse: separate;
+    border-spacing: 0 20px;
+}
+
+.item__information__table th {
+    padding-right: 60px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: left;
+    width: 35%;
+    vertical-align: top;
+}
+
+.item__information__table td {
+    padding: 3px 0;
+    font-size: 20px;
+    font-weight: 400;
+    vertical-align: top;
+}
+
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-tag {
+    padding: 4px 16px;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.item__comment_title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5F5F5F;
+}
+
+.account__list {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.item__account__image {
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.item__account__image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+.item__account__circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #777777;
+    display: inline-block;
+}
+
+.item__user-name {
+    margin-left: 18px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.comment__content {
+    margin-bottom: 40px;
+    padding: 15px;
+    width: 100%;
+    background-color: #E5E5E5;
+}
+
+.item__user-comment {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.form__group-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.form__group-content textarea {
+    width: 100%;
+    min-height: 246px;
+    font-size: 24px;
+}
+
+.form__button-submit {
+    margin-top: 50px;
+    width: 100%;
+    height: 56px;
+    background-color: #FF5555;
+    color: #fff;
+    border: none;
+    font-size: 25px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form__error {
+    height: 20px;
+    color: #ff0000;
+    text-align: left;
+}
+
+@media screen and (max-width: 850px) {
+    .item__content {
+            margin: 95px auto 0;
+            width: 95%;
+            display: block;
+    }
+
+        .item__image,
+        .item__detail {
+            margin: 0 auto 30px;
+            max-width: 90%;
+        }
+    
+        .item__image img {
+            margin: 0 auto;
+        }
+}
