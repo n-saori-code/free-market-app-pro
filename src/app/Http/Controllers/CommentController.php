@@ -18,6 +18,6 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect()->back();
+        return redirect()->route('item.show', $product->id);
     }
 }

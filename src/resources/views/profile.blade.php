@@ -50,7 +50,7 @@
                 <div class="product__item__txt">
                     <p class="product__item__title">{{ $product->title }}</p>
                     @if($product->is_sold)
-                    <p class="sell__tag">Sold</p>
+                    <p class="sell__tag">SOLD</p>
                     @endif
                 </div>
             </a>
@@ -69,7 +69,7 @@
                 <div class="product__item__txt">
                     <p class="product__item__title">{{ $product->title }}</p>
                     @if($product->is_sold)
-                    <p class="sell__tag">Sold</p>
+                    <p class="sell__tag">SOLD</p>
                     @endif
                 </div>
             </a>

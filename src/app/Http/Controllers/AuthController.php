@@ -17,12 +17,12 @@ class AuthController extends Controller
     ##会員登録処理
     public function register(RegisterRequest $request)
     {
-        $form = $request->all();
+        $form = $request->only(['name', 'email', 'password']);
         $form['password'] = Hash::make($form['password']);
         $user = User::create($form);
         event(new Registered($user));
         Auth::login($user);
-        return redirect('/email/verify');
+        return redirect()->route('verification.notice');
     }
 
     ##ログイン認証

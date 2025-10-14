@@ -95,6 +95,22 @@ p {
     cursor: pointer;
 }
 
+.item__btn--sold {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: none;
+    pointer-events: none;
+}
+
+.item__btn--disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: none;
+    pointer-events: none;
+}
+
 .item__description {
     margin: 0 0 20px;
 }
@@ -227,6 +243,26 @@ p {
     font-weight: 700;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.sold-out-comment {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.sold-out-message {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.sold-btn {
+    background-color: #ccc !important;
+    color: #fff !important;
+    cursor: not-allowed;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
 }
 
 .form__error {

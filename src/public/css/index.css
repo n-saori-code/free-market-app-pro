@@ -84,5 +84,19 @@
     .tab-content {
             grid-template-columns: repeat(2, 1fr);
             gap: 4.5%;
-        }
+    }
+
+    .product__tab {
+        justify-content: center;
+    }
+
+    .product__list {
+        margin: 30px 10px 0 10px;
+        font-size: 18px;
+    }
+
+    .product__tab label {
+        cursor: pointer;
+        padding: 5px 10px;
+    }
 }

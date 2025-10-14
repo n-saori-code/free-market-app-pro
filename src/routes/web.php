@@ -43,8 +43,8 @@ Route::get('/email/verify', function () {
 
 // メール内リンククリック時（認証完了）
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill(); // 認証完了
-    return redirect('/mypage/profile'); // 認証後のリダイレクト先
+    $request->fulfill();
+    return redirect('/mypage/profile');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 認証メール再送
@@ -54,7 +54,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-Route::middleware(['auth', 'verified'])->group(
+Route::middleware('auth')->group(
     function () {
         ##マイページ
         Route::get('/mypage', [ProfileController::class, 'mypage'])->name('mypage');

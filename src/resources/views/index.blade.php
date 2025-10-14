@@ -23,7 +23,7 @@
 
         @guest
         <label for="tab2">
-            <a href="{{ route('login') }}">マイリスト</a>
+            <label for="tab2">マイリスト</label>
         </label>
         @endguest
     </li>
@@ -39,7 +39,7 @@
                 <div class="product__item__txt">
                     <p class="product__item__title">{{ $product->title }}</p>
                     @if($product->is_sold)
-                    <p class="sell__tag">Sold</p>
+                    <p class="sell__tag">SOLD</p>
                     @endif
                 </div>
             </a>
@@ -49,11 +49,15 @@
 
     <!-- マイリスト -->
     <div class="tab-content" id="content2">
-        @auth
-        @if($favoriteProducts->isEmpty())
+        @php
+        $favorites = Auth::check() ? ($favoriteProducts ?? collect()) : collect();
+        @endphp
+
+        @if(Auth::check())
+        @if($favorites->isEmpty())
         <p>いいねした商品はありません。</p>
         @else
-        @foreach($favoriteProducts as $product)
+        @foreach($favorites as $product)
         <div class="product__item">
             <a href="{{ route('item.show', $product->id) }}">
                 <div class="product__image">
@@ -62,14 +66,14 @@
                 <div class="product__item__txt">
                     <p class="product__item__title">{{ $product->title }}</p>
                     @if($product->is_sold)
-                    <p class="sell__tag">Sold</p>
+                    <p class="sell__tag">SOLD</p>
                     @endif
                 </div>
             </a>
         </div>
         @endforeach
         @endif
-        @endauth
+        @endif
     </div>
 </div>
 @endsection

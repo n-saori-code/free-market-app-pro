@@ -100,11 +100,56 @@ h1, h2, p, a {
     color: #000;
 }
 
+@media screen and (min-width: 851px) and (max-width: 1500px) {
+    .header__inner {
+        padding: 0 3vw;
+    }
+
+    .header__heading img {
+        max-width: clamp(200px, 25vw, 370px);
+    }
+
+    .header-niv__form input {
+        margin: 0 2vw;
+        padding: 0.6vw 1.8vw;
+        width: clamp(250px, 30vw, 500px);
+        height: clamp(36px, 4vw, 50px);
+        font-size: clamp(16px, 1.6vw, 24px);
+    }
+
+    .header-nav__login-link,
+    .header-nav__mypage-link,
+    .header-nav__button {
+        margin-right: clamp(10px, 1.5vw, 20px);
+        font-size: clamp(16px, 1.6vw, 24px);
+    }
+
+    .header-nav__sell-link {
+        margin-left: clamp(6px, 1vw, 10px);
+        padding: clamp(3px, 0.5vw, 5px) clamp(12px, 1.5vw, 20px);
+        font-size: clamp(16px, 1.6vw, 24px);
+        border-radius: 0.5vw;
+    }
+}
+
 
 @media screen and (max-width: 850px) {
 
+    .header__heading {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .header__heading img {
+        max-width: 60vw;
+        height: auto;
+    }
+
     .header-utilities {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 
     .header__content {

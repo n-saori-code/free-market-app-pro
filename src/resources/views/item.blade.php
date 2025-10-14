@@ -37,9 +37,15 @@
             </div>
         </div>
 
+        @if($product->is_sold)
+        <button class="item__btn item__btn--sold" disabled>SOLD</button>
+        @elseif(Auth::check() && $product->user_id === Auth::id())
+        <button class="item__btn item__btn--disabled" disabled>出品者のため購入できません</button>
+        @else
         <form action="{{ route('purchase.show', ['item_id' => $product->id]) }}" method="get" class="item__form">
             <button type="submit" class="item__btn">購入手続きへ</button>
         </form>
+        @endif
 
         <div class="item__description">
             <h3 class="item__head">商品説明</h3>
@@ -72,8 +78,7 @@
                 <div class="account__list">
                     @if($comment->user->profile && $comment->user->profile->profile_image)
                     <div class="item__account__image">
-                        <img src="{{ asset('storage/'.$comment->user->profile->profile_image) }}"
-                            alt="">
+                        <img src="{{ asset('storage/'.$comment->user->profile->profile_image) }}" alt="">
                     </div>
                     @else
                     <div class="item__account__circle"></div>
@@ -83,30 +88,37 @@
                 <div class="comment__content">
                     <p class="item__user-comment">{{ $comment->content }}</p>
                 </div>
-                @endforeach
+            </div>
+            @endforeach
 
-                <form action="{{ route('comments.store', $product->id) }}" method="POST" class="item__comment__form">
-                    @csrf
-                    <div class="form__group">
-                        <div class="form__group-title">
-                            <span class="form__label--item">商品へのコメント</span>
-                        </div>
-                        <div class="form__group-content">
-                            <div class="form__input--text">
-                                <textarea name="content">{{ old('content') }}</textarea>
-                                <div class="form__error">
-                                    @error('content')
-                                    {{ $message }}
-                                    @enderror
-                                </div>
+            @if($product->is_sold)
+            <div class="sold-out-comment">
+                <p class="sold-out-message">売り切れの為、コメントできません。</p>
+                <button class="form__button-submit sold-btn" disabled>コメントを送信する</button>
+            </div>
+            @else
+            <form action="{{ route('comments.store', $product->id) }}" method="POST" class="item__comment__form">
+                @csrf
+                <div class="form__group">
+                    <div class="form__group-title">
+                        <span class="form__label--item">商品へのコメント</span>
+                    </div>
+                    <div class="form__group-content">
+                        <div class="form__input--text">
+                            <textarea name="content">{{ old('content') }}</textarea>
+                            <div class="form__error">
+                                @error('content')
+                                {{ $message }}
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    <div class="form__button">
-                        <button class="form__button-submit" type="submit">コメントを送信する</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="form__button">
+                    <button class="form__button-submit" type="submit">コメントを送信する</button>
+                </div>
+            </form>
+            @endif
         </div>
     </div>
 </div>

@@ -103,6 +103,6 @@ class ItemController extends Controller
 
         $product->categories()->attach($request->category_id);
 
-        return redirect()->route('mypage')->with('success', '商品を出品しました！');
+        return redirect()->route('mypage');
     }
 }
