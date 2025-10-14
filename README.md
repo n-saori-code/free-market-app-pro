@@ -4,7 +4,7 @@
 
 **Docker ビルド**
 
-1. `git clone git@github.com:estra-inc/confirmation-test-contact-form.git`
+1. `git clone git@github.com:n-saori-code/free-market-app.git`
 2. DockerDesktop アプリを立ち上げる
 3. `docker-compose up -d --build`
 
