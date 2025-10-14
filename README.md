@@ -44,6 +44,17 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
+```text
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=no-reply@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 5. アプリケーションキーの作成
 
 ```bash
@@ -62,7 +73,13 @@ php artisan migrate
 php artisan db:seed
 ```
 
-## Stripe テスト決済
+8. ストレージリンクの作成（画像表示のため）
+
+```bash
+php artisan storage:link
+```
+
+## Stripe テスト決済の設定
 
 1. [Stripe 公式サイト](https://stripe.com/jp) にアクセスし、テストモードでアカウントを登録します。
    管理画面の「開発者」→「API キー」から以下のキーを取得します。
