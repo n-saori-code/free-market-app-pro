@@ -4,9 +4,13 @@
 
 **Docker ビルド**
 
-1. `git clone git@github.com:n-saori-code/free-market-app.git`
+1. リポジトリをクローン
+   `git clone git@github.com:n-saori-code/nakanosaori-kadai-1.git`
+
 2. DockerDesktop アプリを立ち上げる
-3. `docker-compose up -d --build`
+
+3. クローンしたディレクトリ内に移動し、以下のコマンドで Docker コンテナをビルドして起動します
+   `docker-compose up -d --build`
 
 > _本プロジェクトでは、**M1/M2 Mac でもビルド可能** になるように `platform: linux/amd64` を指定済みです。_
 
@@ -30,13 +34,14 @@ FROM --platform=linux/amd64 php:8.1-fpm
 
 **Laravel 環境構築**
 
-1. `docker-compose exec php bash`
-2. `composer install`
-3. 「.env.example」ファイルを「.env」ファイルにコピーまたはリネーム
+1. コンテナに入る
+   `docker-compose exec php bash`
 
-```bash
-   cp .env.example .env
-```
+2. 依存パッケージをインストール
+   `composer install`
+
+3. 「.env.example」ファイルを「.env」ファイルにコピーまたはリネーム
+   `cp .env.example .env`
 
 4. .env に以下の環境変数を追加
 
