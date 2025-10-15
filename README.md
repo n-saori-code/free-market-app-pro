@@ -7,7 +7,7 @@
 1. リポジトリをクローン
 
 ```bash
-git clone git@github.com:n-saori-code/nakanosaori-kadai-1.git
+git clone git@github.com:n-saori-code/free-market-app.git
 ```
 
 2. DockerDesktop アプリを立ち上げる
