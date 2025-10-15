@@ -19,10 +19,10 @@ php:
     platform: linux/amd64
 
 mysql:
-platform: linux/amd64
+    platform: linux/amd64
 
 phpmyadmin:
-platform: linux/amd64
+    platform: linux/amd64
 
 # Dockerfile
 FROM --platform=linux/amd64 php:8.1-fpm
@@ -32,7 +32,12 @@ FROM --platform=linux/amd64 php:8.1-fpm
 
 1. `docker-compose exec php bash`
 2. `composer install`
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成
+3. 「.env.example」ファイルを「.env」ファイルにコピーまたはリネーム
+
+```bash
+   cp .env.example .env
+```
+
 4. .env に以下の環境変数を追加
 
 ```text
@@ -120,6 +125,20 @@ ZIP: 任意 (例: 123-4567)
 2. 「認証はこちらから」のボタンを押し、http://localhost:8025 にアクセスし、届いたメールを確認
 3. メール内の「Verify Email Address」ボタンをクリック
 4. 認証完了後、プロフィール設定画面に遷移
+
+## 初期ログインアカウント（シーディングで自動作成）
+
+php artisan db:seed 実行後、以下のアカウントが自動的に登録されます。
+
+管理者アカウント
+・ユーザー名： 管理者ユーザー
+・メールアドレス： admin@example.com
+・パスワード： adminpassword
+
+一般ユーザーアカウント
+・ユーザー名： 一般ユーザー
+・メールアドレス： user@example.com
+・パスワード： userpassword
 
 ## 使用技術(実行環境)
 

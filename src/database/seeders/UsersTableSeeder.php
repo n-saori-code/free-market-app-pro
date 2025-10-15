@@ -9,29 +9,44 @@ use Faker\Factory as Faker;
 
 class UsersTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $faker = Faker::create('ja_JP');
 
-        $userId = DB::table('users')->insertGetId([
-            'name' => mb_substr('テストユーザー', 0, 20),
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+        // 管理者ユーザー
+        $adminId = DB::table('users')->insertGetId([
+            'name' => '管理者ユーザー',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('adminpassword'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        $postalCode = preg_replace('/(\d{3})(\d{4})/', '$1-$2', $faker->postcode());
+        $postalCodeAdmin = preg_replace('/(\d{3})(\d{4})/', '$1-$2', $faker->postcode());
+        DB::table('profiles')->insert([
+            'user_id' => $adminId,
+            'profile_image' => 'profile_images/default.jpg',
+            'postal_code' => $postalCodeAdmin,
+            'address' => mb_substr($faker->prefecture() . $faker->city() . $faker->streetAddress(), 0, 255),
+            'building' => $faker->optional()->secondaryAddress(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
+        // 一般ユーザー
+        $userId = DB::table('users')->insertGetId([
+            'name' => '一般ユーザー',
+            'email' => 'user@example.com',
+            'password' => Hash::make('userpassword'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $postalCodeUser = preg_replace('/(\d{3})(\d{4})/', '$1-$2', $faker->postcode());
         DB::table('profiles')->insert([
             'user_id' => $userId,
             'profile_image' => 'profile_images/default.jpg',
-            'postal_code' => $postalCode,
+            'postal_code' => $postalCodeUser,
             'address' => mb_substr($faker->prefecture() . $faker->city() . $faker->streetAddress(), 0, 255),
             'building' => $faker->optional()->secondaryAddress(),
             'created_at' => now(),
