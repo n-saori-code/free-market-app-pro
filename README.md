@@ -271,7 +271,6 @@ php artisan migrate --env=testing
 ```
 
 7.  PHPUnit テストの実行<br>
-    テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。<br>
     本番・開発用データベースには影響しません。<br>
     以下のコマンドを入力してください。<br>
 
