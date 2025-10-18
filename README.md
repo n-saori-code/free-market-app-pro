@@ -179,9 +179,9 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 ## テスト環境（PHPUnit）
 
-テストは phpunit.xml で設定されたテスト用データベース demo_test を使用します。
+テストは 開発用 DB に影響を与えない専用データベース demo_test を使用します。
 
-1. テスト用データベースの作成（初回のみ）<br>
+1. テスト用データベースの作成<br>
    Docker 起動直後でまだ demo_test が存在しない場合は、以下の手順で作成してください：<br>
    パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:を参照。
 
@@ -204,7 +204,46 @@ exit
 
 > \_すでに存在する場合は、この手順は不要です。
 
-2. テスト用アプリケーションキーの生成（初回のみ）<br>
+2. config ファイルの変更<br>
+   database.php を開き、以下の設定になっていることを確認してください。
+
+```bash
+'mysql_test' => [
+'driver' => 'mysql',
+'url' => env('DATABASE_URL'),
+'host' => env('DB_HOST', '127.0.0.1'),
+'port' => env('DB_PORT', '3306'),
+'database' => 'demo_test',
+'username' => 'root',
+'password' => 'root',
+'unix_socket' => env('DB_SOCKET', ''),
+'charset' => 'utf8mb4',
+'collation' => 'utf8mb4_unicode_ci',
+'prefix' => '',
+'prefix_indexes' => true,
+'strict' => true,
+'engine' => null,
+'options' => extension_loaded('pdo_mysql') ? array_filter([
+   PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+]) : [],
+],
+```
+
+3. .env.testing ファイルの文頭部分にある APP_ENV と APP_KEY を編集します。<br>
+   またデータベースの接続情報を加えてください。
+
+```bash
+APP_ENV=test
+APP_KEY=
+```
+
+```bash
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+4. テスト用アプリケーションキーの生成<br>
    テスト実行時に必要なアプリケーションキーを生成します。
 
 ```bash
@@ -212,10 +251,34 @@ docker-compose exec php bash
 php artisan key:generate --env=testing
 ```
 
-3. PHPUnit テストの実行<br>
-   テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。<br>
-   本番・開発用データベースには影響しません。<br>
-   以下のコマンドを入力してください。
+以下でキャッシュをクリアにしてください。
+
+```bash
+php artisan config:clear
+```
+
+5. マイグレーションコマンドを実行して、テスト用のテーブルを作成します。
+
+```bash
+php artisan migrate --env=testing
+```
+
+6. phpunit.xml を開き、DB_CONNECTION と DB_DATABASE が以下になっているか確認してください。
+
+```bash
+<server name="DB_CONNECTION" value="mysql_test"/>
+<server name="DB_DATABASE" value="demo_test"/>
+```
+
+7.  PHPUnit テストの実行<br>
+    テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。<br>
+    本番・開発用データベースには影響しません。<br>
+    以下のコマンドを入力してください。<br>
+
+```bash
+# キャッシュをクリアにする
+php artisan config:clear
+```
 
 ```bash
 # 個別テストファイルの実行
