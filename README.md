@@ -12,7 +12,7 @@ git clone git@github.com:n-saori-code/free-market-app.git
 
 2. DockerDesktop アプリを立ち上げる
 
-3. クローンしたディレクトリ内に移動し、以下のコマンドで Docker コンテナをビルドして起動
+3. クローンしたディレクトリ(free-market-app)内に移動し、以下のコマンドで Docker コンテナをビルドして起動
 
 ```bash
 docker-compose up -d --build
@@ -36,6 +36,26 @@ phpmyadmin:
 
 # Dockerfile
 FROM --platform=linux/amd64 php:8.1-fpm
+```
+
+> \_docker mysql コンテナの起動に失敗する場合は、以下を実行して mysql のデータをクリアにしてください。
+
+1. Docker Compose を停止
+
+```bash
+docker-compose down
+```
+
+2. MySQL のデータを削除
+
+```bash
+rm -rf ./docker/mysql/data
+```
+
+3. MySQL コンテナを再起動
+
+```bash
+docker-compose up -d
 ```
 
 **Laravel 環境構築**
@@ -104,6 +124,8 @@ php artisan db:seed
 php artisan storage:link
 ```
 
+9. http://localhost/ にアクセスし、アプリの表示を確認してください。
+
 ## Stripe テスト決済の設定
 
 1. [Stripe 公式サイト](https://stripe.com/jp) にアクセスし、テストモードでアカウントを登録します。
@@ -161,6 +183,53 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 - ユーザー名：一般ユーザー
 - メールアドレス：user@example.com
 - パスワード：userpassword
+
+## テスト環境（PHPUnit）
+
+テストは phpunit.xml で設定されたテスト用データベース demo_test を使用します。
+
+1. テスト用データベースの作成（初回のみ）
+   Docker 起動直後でまだ demo_test が存在しない場合は、以下の手順で作成してください：
+   パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:に設定されている root を入力する。
+
+```bash
+# データベースの確認
+docker exec -it free-market-app-test-mysql-1 mysql -u root -p
+SHOW DATABASES;
+
+# データベースの作成
+docker exec -it free-market-app-test-mysql-1 bash
+mysql -u root -p
+CREATE DATABASE demo_test;
+exit
+exit
+```
+
+> \_すでに存在する場合は、この手順は不要です。
+
+2. テスト用アプリケーションキーの生成（初回のみ）
+   テスト実行時に必要なアプリケーションキーを生成します。
+
+```bash
+docker-compose exec php bash
+php artisan key:generate --env=testing
+```
+
+3. PHPUnit テストの実行
+   テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。
+   本番・開発用データベースには影響しません。
+   以下のコマンドを入力してください。
+
+```bash
+# 個別テストファイルの実行
+vendor/bin/phpunit tests/Feature/AuthTest.php
+vendor/bin/phpunit tests/Feature/OrderTest.php
+vendor/bin/phpunit tests/Feature/ProductTest.php
+vendor/bin/phpunit tests/Feature/ProfileTest.php
+
+# ディレクトリ単位でまとめて実行
+vendor/bin/phpunit tests/Feature
+```
 
 ## 使用技術(実行環境)
 
