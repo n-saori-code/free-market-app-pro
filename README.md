@@ -40,21 +40,14 @@ FROM --platform=linux/amd64 php:8.1-fpm
 
 > \_docker mysql コンテナの起動に失敗する場合は、以下を実行して mysql のデータをクリアにしてください。
 
-1. Docker Compose を停止
-
 ```bash
+# 1. Docker Compose を停止
 docker-compose down
-```
 
-2. MySQL のデータを削除
-
-```bash
+# 2. MySQL のデータを削除
 rm -rf ./docker/mysql/data
-```
 
-3. MySQL コンテナを再起動
-
-```bash
+# 3. MySQL コンテナを再起動
 docker-compose up -d
 ```
 
@@ -188,16 +181,20 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 テストは phpunit.xml で設定されたテスト用データベース demo_test を使用します。
 
-1. テスト用データベースの作成（初回のみ）
-   Docker 起動直後でまだ demo_test が存在しない場合は、以下の手順で作成してください：
+1. テスト用データベースの作成（初回のみ）<br>
+   Docker 起動直後でまだ demo_test が存在しない場合は、以下の手順で作成してください：<br>
    パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:に設定されている root を入力する。
 
+### データベースの確認
+
 ```bash
-# データベースの確認
 docker exec -it free-market-app-test-mysql-1 mysql -u root -p
 SHOW DATABASES;
+```
 
-# データベースの作成
+### データベースの作成
+
+```bash
 docker exec -it free-market-app-test-mysql-1 bash
 mysql -u root -p
 CREATE DATABASE demo_test;
@@ -207,7 +204,7 @@ exit
 
 > \_すでに存在する場合は、この手順は不要です。
 
-2. テスト用アプリケーションキーの生成（初回のみ）
+2. テスト用アプリケーションキーの生成（初回のみ）<br>
    テスト実行時に必要なアプリケーションキーを生成します。
 
 ```bash
@@ -216,8 +213,8 @@ php artisan key:generate --env=testing
 ```
 
 3. PHPUnit テストの実行
-   テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。
-   本番・開発用データベースには影響しません。
+   テスト実行時、demo_test データベースに対してマイグレーションが自動で適用されます。<br>
+   本番・開発用データベースには影響しません。<br>
    以下のコマンドを入力してください。
 
 ```bash
