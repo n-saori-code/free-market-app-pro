@@ -56,7 +56,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::middleware('auth')->group(
     function () {
-        ##マイページ
+        ##プロフィール画面
         Route::get('/mypage', [ProfileController::class, 'mypage'])->name('mypage');
         Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
