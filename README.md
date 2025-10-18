@@ -183,7 +183,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 1. テスト用データベースの作成（初回のみ）<br>
    Docker 起動直後でまだ demo_test が存在しない場合は、以下の手順で作成してください：<br>
-   パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:に設定されている root を入力する。
+   パスワードは、docker-compose.yml ファイルの MYSQL_ROOT_PASSWORD:を参照。
 
 ### データベースの確認
 
