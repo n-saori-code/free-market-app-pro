@@ -80,26 +80,11 @@ class OrderController extends Controller
             return back();
         }
 
-        // StripeService を使ってセッション作成
         $session = $stripe->createCheckoutSession(
             $product,
             $request->payment_method,
             route('purchase.success', ['item_id' => $product->id]),
             route('purchase.cancel', ['item_id' => $product->id])
-        );
-
-        // 注文情報を保存
-        Order::updateOrCreate(
-            [
-                'user_id' => Auth::id(),
-                'product_id' => $product->id,
-            ],
-            [
-                'postal_code' => $request->postal_code ?? Auth::user()->profile->postal_code,
-                'address'     => $request->address ?? Auth::user()->profile->address,
-                'building'    => $request->building ?? Auth::user()->profile->building,
-                'payment_method' => $request->payment_method,
-            ]
         );
 
         return redirect($session->url);
@@ -109,7 +94,22 @@ class OrderController extends Controller
     public function success($item_id)
     {
         $product = Product::findOrFail($item_id);
-        $product->update(['is_sold' => true]);
+        if (!$product->is_sold) {
+            $product->update(['is_sold' => true]);
+
+            Order::updateOrCreate(
+                [
+                    'user_id' => Auth::id(),
+                    'product_id' => $product->id,
+                ],
+                [
+                    'postal_code' => Auth::user()->profile->postal_code,
+                    'address'     => Auth::user()->profile->address,
+                    'building'    => Auth::user()->profile->building,
+                    'payment_method' => 'stripe',
+                ]
+            );
+        }
 
         return redirect('/');
     }
