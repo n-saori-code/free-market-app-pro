@@ -7,8 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,22 +34,19 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'
 ##商品検索
 Route::get('/search', [ItemController::class, 'search'])->name('item.search');
 
-// メール認証待ちページ
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+// メール認証ページ
+Route::get('/email/verify', [AuthController::class, 'notice'])
+    ->name('verification.notice');
 
 // メール内リンククリック時（認証完了）
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/mypage/profile');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])
+    ->middleware('signed')
+    ->name('verification.verify');
 
 // 認証メール再送
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back();
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', [AuthController::class, 'resend'])
+    ->middleware('throttle:6,1')
+    ->name('verification.send');
 
 
 Route::middleware('auth')->group(

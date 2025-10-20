@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 
@@ -32,5 +33,26 @@ class AuthController extends Controller
             session(['from_login' => true]);
             return redirect('/?tab=mylist');
         }
+    }
+
+    ## メール認証ページ
+    public function notice()
+    {
+        return view('auth.verify-email');
+    }
+
+    ## メール内リンククリック時（認証完了）
+    public function verify(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+        return redirect('/mypage/profile');
+    }
+
+    ## 認証メール再送
+    public function resend(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back();
     }
 }
