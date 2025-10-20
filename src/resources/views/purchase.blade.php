@@ -48,13 +48,22 @@
                 </div>
 
                 <div class="purchase__item-wrap">
-                    @if($address)
+                    @if(session('purchase_address'))
+                    <p class="purchase__item-wrap-txt">〒{{ session('purchase_address.postal_code') }}</p>
+                    <p class="purchase__item-wrap-txt">
+                        {{ session('purchase_address.address') }} {{ session('purchase_address.building') }}
+                    </p>
+
+                    <input type="hidden" name="postal_code" value="{{ session('purchase_address.postal_code') }}">
+                    <input type="hidden" name="address" value="{{ session('purchase_address.address') }}">
+                    <input type="hidden" name="building" value="{{ session('purchase_address.building') }}">
+                    @elseif($address)
                     <p class="purchase__item-wrap-txt">〒{{ $address->postal_code }}</p>
                     <p class="purchase__item-wrap-txt">{{ $address->address }} {{ $address->building }}</p>
-                    <!-- フォーム送信用 -->
-                    <input type="hidden" name="postal_code" value="{{ $address->postal_code ?? Auth::user()->profile->postal_code ?? '' }}">
-                    <input type="hidden" name="address" value="{{ $address->address ?? Auth::user()->profile->address ?? '' }}">
-                    <input type="hidden" name="building" value="{{ $address->building ?? Auth::user()->profile->building ?? '' }}">
+
+                    <input type="hidden" name="postal_code" value="{{ $address->postal_code }}">
+                    <input type="hidden" name="address" value="{{ $address->address }}">
+                    <input type="hidden" name="building" value="{{ $address->building }}">
                     @else
                     <p class="purchase__item-wrap-txt">住所が未登録です</p>
                     @endif

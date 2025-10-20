@@ -30,7 +30,7 @@ class ExhibitionRequest extends FormRequest
             'category_id'   => 'required|array|min:1',
             'category_id.*' => 'exists:categories,id',
             'condition' => 'required|exists:conditions,id',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:4294967295',
         ];
     }
 
@@ -48,6 +48,7 @@ class ExhibitionRequest extends FormRequest
             'price.required' => '販売価格を入力してください。',
             'price.numeric' => '価格は数値で入力してください。',
             'price.min' => '価格は0円以上で入力してください。',
+            'price.max' => '価格は4,294,967,295円以下で入力してください。',
         ];
     }
 }

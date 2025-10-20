@@ -25,11 +25,14 @@ class OrderController extends Controller
             ->where('product_id', $item_id)
             ->first();
 
-        $address = $order ?? $user->profile;
+        $address = $order
+            ?? session('purchase_address')
+            ?? $user->profile;
 
         return view('purchase', compact('product', 'address'));
     }
 
+    #住所変更画面の表示
     public function showAddressForm($item_id)
     {
         $product = Product::findOrFail($item_id);
@@ -49,24 +52,18 @@ class OrderController extends Controller
     ##住所変更
     public function updateAddress(AddressRequest $request, $item_id)
     {
-        $order = Order::firstOrNew(
-            [
-                'user_id'    => Auth::id(),
-                'product_id' => $item_id,
-            ]
-        );
+        $order = Order::where('user_id', Auth::id())
+            ->where('product_id', $item_id)
+            ->first();
 
-        if (!$order->exists) {
-            $order->postal_code = Auth::user()->profile->postal_code;
-            $order->address     = Auth::user()->profile->address;
-            $order->building    = Auth::user()->profile->building;
+        if ($order) {
+            $order->postal_code = $request->postal_code;
+            $order->address     = $request->address;
+            $order->building    = $request->building;
+            $order->save();
+        } else {
+            session(['purchase_address' => $request->only('postal_code', 'address', 'building')]);
         }
-
-        $order->postal_code = $request->postal_code;
-        $order->address     = $request->address;
-        $order->building    = $request->building;
-
-        $order->save();
 
         return redirect()->route('purchase.show', $item_id);
     }
@@ -94,6 +91,7 @@ class OrderController extends Controller
     public function success($item_id)
     {
         $product = Product::findOrFail($item_id);
+
         if (!$product->is_sold) {
             $product->update(['is_sold' => true]);
 
@@ -109,6 +107,8 @@ class OrderController extends Controller
                     'payment_method' => 'stripe',
                 ]
             );
+
+            session()->forget('purchase_address');
         }
 
         return redirect('/');

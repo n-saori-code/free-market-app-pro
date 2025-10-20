@@ -153,6 +153,7 @@ ZIP: 任意 (例: 123-4567)
 - 詳細画面の「購入手続きへ」ボタンが「SOLD」となり、クリックできなくなります。
 - コメント送信ボタンも無効化され、「売り切れの為、コメントできません。」と表示されます。
 - 出品した商品の詳細画面では、ボタンが「出品者のため購入できません」となり、クリックできません。
+- 出品商品の価格の上限は 4,294,967,295 円以下にしています。
 
 ## メール認証機能(使用技術：Mailhog)
 
@@ -164,6 +165,7 @@ ZIP: 任意 (例: 123-4567)
 ## 初期ログインアカウント（シーディングで自動作成）
 
 php artisan db:seed 実行後、以下のアカウントが自動的に登録されます。
+※要件に記載がなかったので、管理者ユーザーには特に管理者の権限は与えておりません。
 
 ### 管理者アカウント
 
@@ -188,17 +190,16 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 ### データベースの確認
 
 ```bash
-docker exec -it free-market-app-test-mysql-1 mysql -u root -p
+docker exec -it free-market-app-mysql-1 mysql -u root -p
 SHOW DATABASES;
 ```
 
 ### データベースの作成
 
 ```bash
-docker exec -it free-market-app-test-mysql-1 bash
+docker exec -it free-market-app-mysql-1 bash
 mysql -u root -p
 CREATE DATABASE demo_test;
-exit
 exit
 ```
 
