@@ -9,8 +9,8 @@
 @endsection
 
 @section('content')
-<div class="prifile-form__content">
-    <div class="prifile-form__heading">
+<div class="profile-form__content">
+    <div class="profile-form__heading">
         <h2>プロフィール設定</h2>
     </div>
 

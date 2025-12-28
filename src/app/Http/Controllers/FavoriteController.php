@@ -14,7 +14,12 @@ class FavoriteController extends Controller
         $user = Auth::user();
         $product = Product::findOrFail($id);
 
-        // リレーションを使って登録（重複を防ぐ）
+        if ($product->user_id === $user->id) {
+            return response()->json([
+                'message' => '自分の商品にはいいねできません'
+            ], 403);
+        }
+
         $user->favoriteProducts()->syncWithoutDetaching([$product->id]);
 
         return response()->json([

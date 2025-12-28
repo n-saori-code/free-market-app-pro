@@ -22,11 +22,14 @@
         <div class="item__icon">
             <div class="action-item">
                 @php
+                $isOwner = Auth::check() && $product->user_id === Auth::id();
                 $isFavorited = $product->favoritedBy->contains('id', auth()->id());
                 @endphp
                 <button class="favorite-btn"
                     data-id="{{ $product->id }}"
-                    data-favorited="{{ $isFavorited ? 'true' : 'false' }}">
+                    data-favorited="{{ $isFavorited ? 'true' : 'false' }}"
+                    data-auth="{{ Auth::check() ? 'true' : 'false' }}"
+                    @if($isOwner) disabled @endif>
                     <img src="{{ asset($isFavorited ? 'images/icon-star-filled.png' : 'images/icon-star.png') }}" alt="star" class="action-icon">
                 </button>
                 <span class="count">{{ $product->favoritedBy->count() }}</span>
@@ -132,6 +135,18 @@
             button.addEventListener("click", async (e) => {
                 e.preventDefault();
 
+                const isAuth = button.dataset.auth === "true";
+                const isOwner = button.dataset.owner === "true";
+
+                if (!isAuth) {
+                    window.location.href = "/login";
+                    return;
+                }
+
+                if (isOwner) {
+                    return;
+                }
+
                 const productId = button.dataset.id;
                 const isFavorited = button.dataset.favorited === "true";
 
@@ -139,16 +154,17 @@
                 const method = isFavorited ? "DELETE" : "POST";
 
                 const response = await fetch(url, {
-                    method: method,
+                    method,
                     headers: {
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "X-CSRF-TOKEN": document
+                            .querySelector('meta[name="csrf-token"]').content,
                         "Accept": "application/json",
                     },
                 });
 
                 if (response.ok) {
                     const countSpan = button.nextElementSibling;
-                    let currentCount = parseInt(countSpan.textContent);
+                    let currentCount = parseInt(countSpan.textContent, 10);
 
                     if (isFavorited) {
                         button.querySelector("img").src = "/images/icon-star.png";

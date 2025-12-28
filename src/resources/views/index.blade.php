@@ -22,9 +22,7 @@
         @endauth
 
         @guest
-        <label for="tab2">
-            <label for="tab2">マイリスト</label>
-        </label>
+        <label for="tab2">マイリスト</label>
         @endguest
     </li>
 </ul>

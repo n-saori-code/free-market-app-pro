@@ -1,7 +1,7 @@
 {{-- resources/views/components/header-link.blade.php --}}
 
 <div class="header__content">
-    <form class="header-niv__form" action="{{ route('item.search') }}" method="get">
+    <form class="header-nav__form" action="{{ route('item.search') }}" method="get">
         @csrf
         <input class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ $keyword ?? '' }}">
     </form>
@@ -27,7 +27,7 @@
         </li>
 
         <li class="header-nav__item">
-            <button class="header-nav__sell-link"><a href="/sell">出品</a></button>
+            <a class="header-nav__sell-link" href="/sell">出品</a>
         </li>
     </ul>
 </div>

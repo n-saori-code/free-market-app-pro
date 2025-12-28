@@ -95,15 +95,23 @@ class OrderController extends Controller
         if (!$product->is_sold) {
             $product->update(['is_sold' => true]);
 
+            $address = session('purchase_address') ?? Auth::user()->profile;
+
             Order::updateOrCreate(
                 [
                     'user_id' => Auth::id(),
                     'product_id' => $product->id,
                 ],
                 [
-                    'postal_code' => Auth::user()->profile->postal_code,
-                    'address'     => Auth::user()->profile->address,
-                    'building'    => Auth::user()->profile->building,
+                    'postal_code' => is_array($address)
+                        ? $address['postal_code']
+                        : $address->postal_code,
+                    'address' => is_array($address)
+                        ? $address['address']
+                        : $address->address,
+                    'building' => is_array($address)
+                        ? $address['building']
+                        : $address->building,
                     'payment_method' => 'stripe',
                 ]
             );
