@@ -181,6 +181,143 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | 一般ユーザー 002 | user002@example.com | password002 | マイク・ショルダーバック・タンブラー・コーヒーミル・メイクセット |
 | 一般ユーザー 003 | user003@example.com | password003 |                                                                  |
 
+## テーブル仕様
+
+### users テーブル
+
+| カラム名          | 型              | primary key | unique key | not null | foreign key |
+| ----------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id                | unsigned bigint | ◯           |            | ◯        |             |
+| name              | varchar(255)    |             |            | ◯        |             |
+| email             | varchar(255)    |             | ◯          | ◯        |             |
+| email_verified_at | timestamp       |             |            |          |             |
+| password          | varchar(255)    |             |            | ◯        |             |
+| remember_token    | varchar(100)    |             |            |          |             |
+| created_at        | timestamp       |             |            |          |             |
+| updated_at        | timestamp       |             |            |          |             |
+
+### profiles テーブル
+
+| カラム名      | 型              | primary key | unique key | not null | foreign key |
+| ------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id            | unsigned bigint | ◯           |            | ◯        |             |
+| users_id      | unsigned bigint |             |            | ◯        | users(id)   |
+| profile_image | varchar(255)    |             |            |          |             |
+| postal_code   | varchar(255)    |             |            |          |             |
+| address       | varchar(255)    |             |            |          |             |
+| building      | varchar(255)    |             |            |          |             |
+| created_at    | timestamp       |             |            |          |             |
+| updated_at    | timestamp       |             |            |          |             |
+
+### products テーブル
+
+| カラム名     | 型              | primary key | unique key | not null | foreign key    |
+| ------------ | --------------- | ----------- | ---------- | -------- | -------------- |
+| id           | unsigned bigint | ◯           |            | ◯        |                |
+| users_id     | unsigned bigint |             |            | ◯        | users(id)      |
+| condition_id | unsigned bigint |             |            | ◯        | conditions(id) |
+| image        | varchar(255)    |             |            | ◯        |                |
+| title        | varchar(255)    |             |            | ◯        |                |
+| brand        | varchar(255)    |             |            |          |                |
+| description  | text            |             |            | ◯        |                |
+| price        | int unsigned    |             |            | ◯        |                |
+| is_sold      | boolean         |             |            | ◯        |                |
+| created_at   | timestamp       |             |            |          |                |
+| updated_at   | timestamp       |             |            |          |                |
+
+### categories テーブル
+
+| カラム名      | 型              | primary key | unique key | not null | foreign key |
+| ------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id            | unsigned bigint | ◯           |            | ◯        |             |
+| category_name | varchar(255)    |             | ◯          | ◯        |             |
+| created_at    | timestamp       |             |            |          |             |
+| updated_at    | timestamp       |             |            |          |             |
+
+### conditions テーブル
+
+| カラム名       | 型              | primary key | unique key | not null | foreign key |
+| -------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id             | unsigned bigint | ◯           |            | ◯        |             |
+| condition_name | varchar(255)    |             | ◯          | ◯        |             |
+| created_at     | timestamp       |             |            |          |             |
+| updated_at     | timestamp       |             |            |          |             |
+
+### orders テーブル
+
+| カラム名       | 型              | primary key | unique key | not null | foreign key  |
+| -------------- | --------------- | ----------- | ---------- | -------- | ------------ |
+| id             | unsigned bigint | ◯           |            | ◯        |              |
+| users_id       | unsigned bigint |             |            | ◯        | users(id)    |
+| product_id     | unsigned bigint |             |            | ◯        | products(id) |
+| postal_code    | varchar(255)    |             |            | ◯        |              |
+| address        | varchar(255)    |             |            | ◯        |              |
+| building       | varchar(255)    |             |            |          |              |
+| payment_method | varchar(255)    |             |            | ◯        |              |
+| status         | enum            |             |            | ◯        |              |
+| created_at     | timestamp       |             |            |          |              |
+| updated_at     | timestamp       |             |            |          |              |
+
+### comments テーブル
+
+| カラム名   | 型              | primary key | unique key | not null | foreign key  |
+| ---------- | --------------- | ----------- | ---------- | -------- | ------------ |
+| id         | unsigned bigint | ◯           |            | ◯        |              |
+| product_id | unsigned bigint |             |            | ◯        | products(id) |
+| users_id   | unsigned bigint |             |            | ◯        | users(id)    |
+| content    | text            |             |            | ◯        |              |
+| created_at | timestamp       |             |            |          |              |
+| updated_at | timestamp       |             |            |          |              |
+
+### favorites テーブル
+
+| カラム名   | 型              | primary key | unique key | not null | foreign key  |
+| ---------- | --------------- | ----------- | ---------- | -------- | ------------ |
+| id         | unsigned bigint | ◯           |            | ◯        |              |
+| users_id   | unsigned bigint |             |            | ◯        | users(id)    |
+| product_id | unsigned bigint |             |            | ◯        | products(id) |
+| created_at | timestamp       |             |            |          |              |
+| updated_at | timestamp       |             |            |          |              |
+
+### category_product テーブル
+
+| カラム名    | 型              | primary key | unique key | not null | foreign key    |
+| ----------- | --------------- | ----------- | ---------- | -------- | -------------- |
+| id          | unsigned bigint | ◯           |            | ◯        |                |
+| product_id  | unsigned bigint |             |            | ◯        | products(id)   |
+| category_id | unsigned bigint |             |            | ◯        | categories(id) |
+| created_at  | timestamp       |             |            |          |                |
+| updated_at  | timestamp       |             |            |          |                |
+
+### reviews テーブル
+
+| カラム名               | 型              | primary key | unique key | not null | foreign key |
+| ---------------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id                     | unsigned bigint | ◯           |            | ◯        |             |
+| order_id               | unsigned bigint |             |            | ◯        | orders(id)  |
+| reviewer_id            | unsigned bigint |             |            | ◯        | users(id)   |
+| reviewed_id            | unsigned bigint |             |            | ◯        | users(id)   |
+| rating                 | int unsigned    |             |            | ◯        |             |
+| order_id + reviewer_id | unsigned bigint |             | ◯          |          |             |
+| created_at             | timestamp       |             |            |          |             |
+| updated_at             | timestamp       |             |            |          |             |
+
+### messages テーブル
+
+| カラム名   | 型              | primary key | unique key | not null | foreign key |
+| ---------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id         | unsigned bigint | ◯           |            | ◯        |             |
+| order_id   | unsigned bigint |             |            | ◯        | orders(id)  |
+| sender_id  | unsigned bigint |             |            | ◯        | users(id)   |
+| content    | text            |             |            |          |             |
+| image      | varchar(255)    |             |            |          |             |
+| created_at | timestamp       |             |            |          |             |
+| updated_at | timestamp       |             |            |          |             |
+
+## ER 図
+
+![フリマアプリ ER図](er.png)
+
 ## テスト環境（PHPUnit）
 
 テストは 開発用 DB に影響を与えない専用データベース demo_test を使用します。
@@ -299,10 +436,6 @@ vendor/bin/phpunit tests/Feature
 - Laravel8.83.8
 - MySQL8.0.26
 - nginx1.21.1
-
-## ER 図
-
-![フリマアプリ ER図](er.png)
 
 ## URL
 
