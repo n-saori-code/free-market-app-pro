@@ -7,12 +7,12 @@
 1. リポジトリをクローン
 
 ```bash
-git clone git@github.com:n-saori-code/free-market-app.git
+git clone git@github.com:n-saori-code/free-market-app-pro.git
 ```
 
 2. DockerDesktop アプリを立ち上げる
 
-3. クローンしたディレクトリ(free-market-app)内に移動し、以下のコマンドで Docker コンテナをビルドして起動
+3. クローンしたディレクトリ(free-market-app-pro)内に移動し、以下のコマンドで Docker コンテナをビルドして起動
 
 ```bash
 docker-compose up -d --build
@@ -169,15 +169,17 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 ### 管理者アカウント
 
-- ユーザー名：管理者ユーザー
-- メールアドレス：admin@example.com
-- パスワード：adminpassword
+| ユーザー名     | メールアドレス    | パスワード    |
+| -------------- | ----------------- | ------------- |
+| 管理者ユーザー | admin@example.com | adminpassword |
 
 ### 一般ユーザーアカウント
 
-- ユーザー名：一般ユーザー
-- メールアドレス：user@example.com
-- パスワード：userpassword
+| ユーザー名       | メールアドレス      | パスワード  | 出品した商品                                                     |
+| ---------------- | ------------------- | ----------- | ---------------------------------------------------------------- |
+| 一般ユーザー 001 | user001@example.com | password001 | 時計・HDD・玉ねぎ 3 束・革靴・ノート PC                          |
+| 一般ユーザー 002 | user002@example.com | password002 | マイク・ショルダーバック・タンブラー・コーヒーミル・メイクセット |
+| 一般ユーザー 003 | user003@example.com | password003 |                                                                  |
 
 ## テスト環境（PHPUnit）
 
@@ -190,14 +192,14 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 ### データベースの確認
 
 ```bash
-docker exec -it free-market-app-mysql-1 mysql -u root -p
+docker exec -it free-market-app-pro-mysql-1 mysql -u root -p
 SHOW DATABASES;
 ```
 
 ### データベースの作成
 
 ```bash
-docker exec -it free-market-app-mysql-1 bash
+docker exec -it free-market-app-pro-mysql-1 bash
 mysql -u root -p
 CREATE DATABASE demo_test;
 exit
@@ -300,7 +302,7 @@ vendor/bin/phpunit tests/Feature
 
 ## ER 図
 
-![alt](erd.png?251010)
+![フリマアプリ ER図](er.png)
 
 ## URL
 

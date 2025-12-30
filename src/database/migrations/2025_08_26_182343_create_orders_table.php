@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->string('building')->nullable();
 
             $table->string('payment_method')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

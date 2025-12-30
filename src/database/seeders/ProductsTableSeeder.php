@@ -11,7 +11,7 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'condition_id' => 1,
             'image' => 'products/armani_mens_clock.jpg',
             'title' => '腕時計',
@@ -24,7 +24,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'condition_id' => 2,
             'image' => 'products/hdd_hard_disk.jpg',
             'title' => 'HDD',
@@ -37,7 +37,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'condition_id' => 3,
             'image' => 'products/onion_bundle.jpg',
             'title' => '玉ねぎ3束',
@@ -50,7 +50,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'condition_id' => 4,
             'image' => 'products/leather_shoes.jpg',
             'title' => '革靴',
@@ -63,7 +63,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'condition_id' => 1,
             'image' => 'products/laptop.jpg',
             'title' => 'ノートPC',
@@ -76,7 +76,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 2,
             'image' => 'products/mic.jpg',
             'title' => 'マイク',
@@ -89,7 +89,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 3,
             'image' => 'products/shoulder_bag.jpg',
             'title' => 'ショルダーバッグ',
@@ -102,7 +102,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 4,
             'image' => 'products/tumbler.jpg',
             'title' => 'タンブラー',
@@ -115,7 +115,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 1,
             'image' => 'products/coffee_mill.jpg',
             'title' => 'コーヒーミル',
@@ -128,7 +128,7 @@ class ProductsTableSeeder extends Seeder
         );
 
         $product = Product::create([
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 2,
             'image' => 'products/makeup_set.jpg',
             'title' => 'メイクセット',

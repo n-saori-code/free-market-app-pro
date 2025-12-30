@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
 
 class OrderFactory extends Factory
 {
@@ -19,6 +20,11 @@ class OrderFactory extends Factory
             'address' => $this->faker->prefecture() . $this->faker->city() . $this->faker->streetAddress(),
             'building' => $this->faker->optional()->secondaryAddress(),
             'payment_method' => $this->faker->randomElement(['card', 'convenience', 'bank_transfer']),
+            'status' => $this->faker->randomElement([
+                Order::STATUS_PENDING,
+                Order::STATUS_IN_CHAT,
+                Order::STATUS_COMPLETED,
+            ]),
         ];
     }
 }
