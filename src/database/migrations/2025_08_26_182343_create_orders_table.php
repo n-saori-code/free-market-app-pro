@@ -15,7 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            // 購入者
+            $table->foreignId('buyer_id')->constrained('users')->cascadeOnDelete();
+            // 出品者
+            $table->foreignId('seller_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
 
             $table->string('postal_code');
@@ -25,6 +28,8 @@ class CreateOrdersTable extends Migration
             $table->string('payment_method')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
+
+            $table->unique(['buyer_id', 'product_id']);
         });
     }
 

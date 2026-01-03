@@ -20,7 +20,19 @@
             @else
             <div class="user__image-circle"></div>
             @endif
-            <p class="user__name">{{ $user->name }}</p>
+
+            <div>
+                <p class="user__name">{{ $user->name }}</p>
+
+                <!-- 星評価 -->
+                @if($user->average_rating)
+                <div class="user__rating" aria-label="評価 {{ $user->average_rating }} / 5">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <span class="star {{ $i <= $user->average_rating ? 'is-active' : '' }}">★</span>
+                        @endfor
+                </div>
+                @endif
+            </div>
         </div>
         <div class="user__btn">
             <a href="{{ route('profile.edit') }}">プロフィールを編集</a>
@@ -38,6 +50,17 @@
         <input type="radio" name="tab" id="tab2">
         <label for="tab2">購入した商品</label>
     </li>
+
+    <li class="product__list">
+        <input type="radio" name="tab" id="tab3">
+        <label for="tab3">
+            取引中の商品
+            @if(($unreadMessageCount ?? 0) > 0)
+            <span class="badge">{{ $unreadMessageCount }}</span>
+            @endif
+        </label>
+    </li>
+
 </ul>
 
 <div class="product__content">
@@ -62,15 +85,15 @@
 
     <!-- 購入した商品 -->
     <div class="tab-content" id="content2">
-        @forelse($purchasedProducts as $product)
+        @forelse($purchasedOrders as $order)
+        @php $product = $order->product; @endphp
         <div class="product__item">
             <a href="{{ route('item.show', $product->id) }}">
-                <img class="product__item__image" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}">
+                <img class="product__item__image"
+                    src="{{ asset('storage/' . $product->image) }}">
                 <div class="product__item__txt">
                     <p class="product__item__title">{{ $product->title }}</p>
-                    @if($product->is_sold)
                     <p class="sell__tag">SOLD</p>
-                    @endif
                 </div>
             </a>
         </div>
@@ -78,7 +101,39 @@
         <p>購入した商品はありません。</p>
         @endforelse
     </div>
+
+    <!-- 取引中の商品 -->
+    <div class="tab-content" id="content3">
+        @forelse($tradingOrders as $order)
+        @php
+        $product = $order->product;
+        $unreadCount = $order->unread_messages_count ?? 0;
+        @endphp
+
+        <div class="product__item">
+            <a href="{{ route('messages.show', $order->id) }}" class="product__link">
+
+                <div class="product__image-wrapper">
+                    <img class="product__item__image"
+                        src="{{ asset('storage/' . $product->image) }}">
+
+                    @if($unreadCount > 0)
+                    <span class="product-badge">{{ $unreadCount }}</span>
+                    @endif
+                </div>
+
+                <div class="product__item__txt">
+                    <p class="product__item__title">{{ $product->title }}</p>
+                </div>
+
+            </a>
+        </div>
+        @empty
+        <p>取引中の商品はありません。</p>
+        @endforelse
+    </div>
 </div>
+
 @endsection
 
 
@@ -93,29 +148,30 @@
                 content.style.display = (i === index) ? 'grid' : 'none';
             });
 
-            // URLを書き換え
             const url = new URL(window.location);
-            if (index === 0) {
-                url.searchParams.set('page', 'sell');
-            } else {
-                url.searchParams.set('page', 'buy');
-            }
+            const pages = ['sell', 'buy', 'trading'];
+            url.searchParams.set('page', pages[index]);
             window.history.pushState({}, '', url);
         }
 
-        // クエリパラメータから初期表示タブを判定
         const params = new URLSearchParams(window.location.search);
-        let defaultIndex = 0; // デフォルトは出品タブ
+        let defaultIndex = 0;
 
-        if (params.get('page') === 'buy') {
-            defaultIndex = 1;
+        switch (params.get('page')) {
+            case 'sell':
+                defaultIndex = 0;
+                break;
+            case 'buy':
+                defaultIndex = 1;
+                break;
+            case 'trading':
+                defaultIndex = 2;
+                break;
         }
 
-        // 初期表示
         showContent(defaultIndex);
         tabs[defaultIndex].checked = true;
 
-        // タブ切り替えイベント
         tabs.forEach((tab, index) => {
             tab.addEventListener('change', () => showContent(index));
         });

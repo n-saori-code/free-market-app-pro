@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as CheckoutSession;
 use App\Services\StripeService;
+use App\Mail\OrderCompletedMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -21,7 +23,7 @@ class OrderController extends Controller
 
         $user = Auth::user();
 
-        $order = Order::where('user_id', Auth::id())
+        $order = Order::where('buyer_id', Auth::id())
             ->where('product_id', $item_id)
             ->first();
 
@@ -38,7 +40,7 @@ class OrderController extends Controller
         $product = Product::findOrFail($item_id);
         $user = Auth::user();
 
-        $order = Order::where('user_id', $user->id)
+        $order = Order::where('buyer_id', $user->id)
             ->where('product_id', $item_id)
             ->first();
 
@@ -52,7 +54,7 @@ class OrderController extends Controller
     ##住所変更
     public function updateAddress(AddressRequest $request, $item_id)
     {
-        $order = Order::where('user_id', Auth::id())
+        $order = Order::where('buyer_id', Auth::id())
             ->where('product_id', $item_id)
             ->first();
 
@@ -97,12 +99,13 @@ class OrderController extends Controller
 
             $address = session('purchase_address') ?? Auth::user()->profile;
 
-            Order::updateOrCreate(
+            $order = Order::updateOrCreate(
                 [
-                    'user_id' => Auth::id(),
+                    'buyer_id'   => Auth::id(),
                     'product_id' => $product->id,
                 ],
                 [
+                    'seller_id' => $product->user_id,
                     'postal_code' => is_array($address)
                         ? $address['postal_code']
                         : $address->postal_code,
@@ -113,18 +116,39 @@ class OrderController extends Controller
                         ? $address['building']
                         : $address->building,
                     'payment_method' => 'stripe',
+                    'status' => Order::STATUS_IN_CHAT,
                 ]
             );
 
             session()->forget('purchase_address');
+        } else {
+            $order = Order::where('buyer_id', Auth::id())
+                ->where('product_id', $product->id)
+                ->firstOrFail();
         }
 
-        return redirect('/');
+        // 取引チャット画面へ
+        return redirect()->route('messages.show', $order->id);
     }
 
     ## 決済キャンセル
     public function cancel($item_id)
     {
         return redirect()->route('purchase.show', $item_id);
+    }
+
+    ##チャットの取引完了
+    public function complete(Order $order)
+    {
+        $user = Auth::user();
+
+        abort_unless($order->buyer_id === $user->id || $order->seller_id === $user->id, 403);
+
+        $order->status = Order::STATUS_COMPLETED;
+        $order->save();
+
+        Mail::to($order->seller->email)->send(new OrderCompletedMail($order));
+
+        return redirect()->route('messages.show', $order->id);
     }
 }

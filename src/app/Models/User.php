@@ -59,15 +59,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // 購入者としての注文
-    public function orders()
+    public function buyingOrders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'buyer_id');
     }
 
-    // 出品者としての取引
-    public function soldOrders()
+    // 出品者としての注文
+    public function sellingOrders()
     {
-        return $this->hasManyThrough(Order::class, Product::class);
+        return $this->hasMany(Order::class, 'seller_id');
     }
 
     public function favoriteProducts()
@@ -97,5 +97,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function messages()
     {
         return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    // レビュー計算用
+    public function getAverageRatingAttribute()
+    {
+        $avg = $this->receivedReviews()->avg('rating');
+
+        return $avg ? round($avg) : null;
     }
 }

@@ -1,5 +1,8 @@
 # フリーマーケットアプリ
 
+Laravel を用いて開発したフリーマーケットアプリケーションです。
+Docker による環境構築、Stripe を用いた決済、MailHog を利用したメール送信機能を実装しています。
+
 ## 環境構築
 
 **Docker ビルド**
@@ -144,6 +147,7 @@ ZIP: 任意 (例: 123-4567)
 
 「コンビニ払い」の場合は、必要事項を入力し支払い先を選択できます。<br>
 ※テストモードのため、実際の支払い処理までは進みません。
+※取引画面まで進む場合は「カード払い」を選択してください。
 
 4. 商品購入が成功
    ・決済後、商品一覧ページに遷移し、商品に「sold」表示がつきます。
@@ -157,10 +161,17 @@ ZIP: 任意 (例: 123-4567)
 
 ## メール認証機能(使用技術：Mailhog)
 
+### 会員登録
+
 1. 会員登録後、メール認証画面に遷移
 2. 「認証はこちらから」のボタンを押し、http://localhost:8025 にアクセスし、届いたメールを確認
 3. メール内の「Verify Email Address」ボタンをクリック
 4. 認証完了後、プロフィール設定画面に遷移
+
+###　商品の取引完了時
+
+1. 購入者が「取引を完了する」ボタンを押し、取引評価を送信
+2. http://localhost:8025 にアクセスすると、出品者宛に取引完了通知メールを確認可能
 
 ## 初期ログインアカウント（シーディングで自動作成）
 
@@ -201,7 +212,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | カラム名      | 型              | primary key | unique key | not null | foreign key |
 | ------------- | --------------- | ----------- | ---------- | -------- | ----------- |
 | id            | unsigned bigint | ◯           |            | ◯        |             |
-| users_id      | unsigned bigint |             |            | ◯        | users(id)   |
+| user_id       | unsigned bigint |             |            | ◯        | users(id)   |
 | profile_image | varchar(255)    |             |            |          |             |
 | postal_code   | varchar(255)    |             |            |          |             |
 | address       | varchar(255)    |             |            |          |             |
@@ -214,7 +225,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | カラム名     | 型              | primary key | unique key | not null | foreign key    |
 | ------------ | --------------- | ----------- | ---------- | -------- | -------------- |
 | id           | unsigned bigint | ◯           |            | ◯        |                |
-| users_id     | unsigned bigint |             |            | ◯        | users(id)      |
+| user_id      | unsigned bigint |             |            | ◯        | users(id)      |
 | condition_id | unsigned bigint |             |            | ◯        | conditions(id) |
 | image        | varchar(255)    |             |            | ◯        |                |
 | title        | varchar(255)    |             |            | ◯        |                |
@@ -248,13 +259,14 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | カラム名       | 型              | primary key | unique key | not null | foreign key  |
 | -------------- | --------------- | ----------- | ---------- | -------- | ------------ |
 | id             | unsigned bigint | ◯           |            | ◯        |              |
-| users_id       | unsigned bigint |             |            | ◯        | users(id)    |
+| buyer_id       | unsigned bigint |             |            | ◯        | users(id)    |
+| seller_id      | unsigned bigint |             |            | ◯        | users(id)    |
 | product_id     | unsigned bigint |             |            | ◯        | products(id) |
 | postal_code    | varchar(255)    |             |            | ◯        |              |
 | address        | varchar(255)    |             |            | ◯        |              |
 | building       | varchar(255)    |             |            |          |              |
-| payment_method | varchar(255)    |             |            | ◯        |              |
-| status         | enum            |             |            | ◯        |              |
+| payment_method | varchar(255)    |             |            |          |              |
+| status         | varchar(255)    |             |            | ◯        |              |
 | created_at     | timestamp       |             |            |          |              |
 | updated_at     | timestamp       |             |            |          |              |
 
@@ -274,7 +286,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | カラム名   | 型              | primary key | unique key | not null | foreign key  |
 | ---------- | --------------- | ----------- | ---------- | -------- | ------------ |
 | id         | unsigned bigint | ◯           |            | ◯        |              |
-| users_id   | unsigned bigint |             |            | ◯        | users(id)    |
+| user_id    | unsigned bigint |             |            | ◯        | users(id)    |
 | product_id | unsigned bigint |             |            | ◯        | products(id) |
 | created_at | timestamp       |             |            |          |              |
 | updated_at | timestamp       |             |            |          |              |
@@ -291,28 +303,30 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 ### reviews テーブル
 
-| カラム名               | 型              | primary key | unique key | not null | foreign key |
-| ---------------------- | --------------- | ----------- | ---------- | -------- | ----------- |
-| id                     | unsigned bigint | ◯           |            | ◯        |             |
-| order_id               | unsigned bigint |             |            | ◯        | orders(id)  |
-| reviewer_id            | unsigned bigint |             |            | ◯        | users(id)   |
-| reviewed_id            | unsigned bigint |             |            | ◯        | users(id)   |
-| rating                 | int unsigned    |             |            | ◯        |             |
-| order_id + reviewer_id | unsigned bigint |             | ◯          |          |             |
-| created_at             | timestamp       |             |            |          |             |
-| updated_at             | timestamp       |             |            |          |             |
+| カラム名    | 型              | primary key | unique key | not null | foreign key |
+| ----------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id          | unsigned bigint | ◯           |            | ◯        |             |
+| order_id    | unsigned bigint |             |            | ◯        | orders(id)  |
+| reviewer_id | unsigned bigint |             |            | ◯        | users(id)   |
+| reviewed_id | unsigned bigint |             |            | ◯        | users(id)   |
+| rating      | int unsigned    |             |            | ◯        |             |
+| created_at  | timestamp       |             |            |          |             |
+| updated_at  | timestamp       |             |            |          |             |
 
 ### messages テーブル
 
-| カラム名   | 型              | primary key | unique key | not null | foreign key |
-| ---------- | --------------- | ----------- | ---------- | -------- | ----------- |
-| id         | unsigned bigint | ◯           |            | ◯        |             |
-| order_id   | unsigned bigint |             |            | ◯        | orders(id)  |
-| sender_id  | unsigned bigint |             |            | ◯        | users(id)   |
-| content    | text            |             |            |          |             |
-| image      | varchar(255)    |             |            |          |             |
-| created_at | timestamp       |             |            |          |             |
-| updated_at | timestamp       |             |            |          |             |
+| カラム名    | 型              | primary key | unique key | not null | foreign key |
+| ----------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id          | unsigned bigint | ◯           |            | ◯        |             |
+| order_id    | unsigned bigint |             |            | ◯        | orders(id)  |
+| sender_id   | unsigned bigint |             |            | ◯        | users(id)   |
+| receiver_id | unsigned bigint |             |            | ◯        | users(id)   |
+| content     | text            |             |            |          |             |
+| image       | varchar(255)    |             |            |          |             |
+| read_at     | timestamp       |             |            |          |             |
+| created_at  | timestamp       |             |            |          |             |
+| updated_at  | timestamp       |             |            |          |             |
+| deleted_at  | timestamp       |             |            |          |             |
 
 ## ER 図
 
@@ -436,6 +450,9 @@ vendor/bin/phpunit tests/Feature
 - Laravel8.83.8
 - MySQL8.0.26
 - nginx1.21.1
+- Docker / Docker Compose
+- Stripe（テストモード）
+- MailHog
 
 ## URL
 

@@ -7,6 +7,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ReviewController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -78,5 +81,23 @@ Route::middleware('auth')->group(
 
         ##コメント
         Route::post('/products/{product}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+        ##取引画面
+        Route::get('/orders/{order}/messages', [MessageController::class, 'show'])->name('messages.show');
+
+        ##チャット送信
+        Route::post('/orders/{order}/messages', [MessageController::class, 'store'])->name('messages.store');
+
+        ## メッセージ編集
+        Route::put('/orders/{order}/messages/{message}', [MessageController::class, 'update'])->name('messages.update');
+
+        ## メッセージ削除
+        Route::delete('/orders/{order}/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+        ## 取引完了
+        Route::patch('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+
+        ## 取引評価
+        Route::post('/orders/{order}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     }
 );

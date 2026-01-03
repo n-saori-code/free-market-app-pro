@@ -14,7 +14,8 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'buyer_id',
+        'seller_id',
         'product_id',
         'postal_code',
         'address',
@@ -27,9 +28,16 @@ class Order extends Model
     const STATUS_IN_CHAT   = 'in_chat';
     const STATUS_COMPLETED = 'completed';
 
-    public function user()
+    // 購入者
+    public function buyer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'buyer_id');
+    }
+
+    // 出品者
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
     }
 
     public function product()
