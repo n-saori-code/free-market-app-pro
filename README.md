@@ -330,7 +330,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 
 ## ER 図
 
-![フリマアプリ ER図](er.png)
+![フリマアプリ ER図](er.png?0104)
 
 ## テスト環境（PHPUnit）
 
