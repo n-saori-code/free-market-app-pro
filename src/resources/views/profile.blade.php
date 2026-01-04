@@ -21,7 +21,7 @@
             <div class="user__image-circle"></div>
             @endif
 
-            <div>
+            <div class="user__wrap">
                 <p class="user__name">{{ $user->name }}</p>
 
                 <!-- 星評価 -->

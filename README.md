@@ -146,7 +146,7 @@ ZIP: 任意 (例: 123-4567)
 ```
 
 「コンビニ払い」の場合は、必要事項を入力し支払い先を選択できます。<br>
-※テストモードのため、実際の支払い処理までは進みません。
+※テストモードのため、実際の支払い処理までは進みません。<br>
 ※取引画面まで進む場合は「カード払い」を選択してください。
 
 4. 商品購入が成功
@@ -276,7 +276,7 @@ php artisan db:seed 実行後、以下のアカウントが自動的に登録さ
 | ---------- | --------------- | ----------- | ---------- | -------- | ------------ |
 | id         | unsigned bigint | ◯           |            | ◯        |              |
 | product_id | unsigned bigint |             |            | ◯        | products(id) |
-| users_id   | unsigned bigint |             |            | ◯        | users(id)    |
+| user_id    | unsigned bigint |             |            | ◯        | users(id)    |
 | content    | text            |             |            | ◯        |              |
 | created_at | timestamp       |             |            |          |              |
 | updated_at | timestamp       |             |            |          |              |

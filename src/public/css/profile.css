@@ -38,8 +38,11 @@
     display: inline-block;
 }
 
-.user__name {
+.user__wrap {
     margin-left: 60px;
+}
+
+.user__name {
     font-size: 36px;
     font-weight: 700;
 }
@@ -197,7 +200,6 @@
     .user__info {
         display: flex;
         align-items: center;
-        gap: clamp(50px, 4vw, 70px);
     }
 
     .user__image {
@@ -264,6 +266,10 @@
         margin-bottom: 0;
     }
 
+    .user__wrap {
+        margin-left: 0;
+    }
+
     .user__name {
         margin-left: 0;
         margin-top: 15px;
@@ -271,7 +277,8 @@
     }
 
     .user__rating {
-        margin: 4px 0 10px;
+        margin: 4px auto 10px;
+        text-align: center;
     }
 
     .user__btn a {
